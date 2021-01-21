@@ -1,0 +1,2 @@
+socket和serversocket
+使用长链接维护服务，注册的接口都是写死的
