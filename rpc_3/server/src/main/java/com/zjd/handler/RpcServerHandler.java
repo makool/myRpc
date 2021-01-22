@@ -32,15 +32,20 @@ public class RpcServerHandler implements Runnable {
         ObjectInputStream objectInputStream = null;
         ObjectOutputStream objectOutputStream = null;
         try {
+            //1.接收client的接口，方法，参数，参数类型
             objectInputStream = new ObjectInputStream(clientSocket.getInputStream());
             objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
             RpcRequest request = (RpcRequest) objectInputStream.readObject();
 
+            //2.在本地注册相关的接口
             Object service = serviceMap.get(request.getClassName());
+
+            //3.调用接口
             Class<?> clazz= service.getClass();
             Method method = clazz.getMethod(request.getMethod(), request.getParameterType());
             Object result = method.invoke(service, request.getParameter());
 
+            //4.返回执行结果
             objectOutputStream.writeObject(result);
             objectOutputStream.flush();
         } catch (IOException | ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {

@@ -29,8 +29,6 @@ public class RpcServer {
         rpcServer.start(12345, "com.zjd.service");
     }
 
-
-
     public void start(int port, String clazz) {
         ServerSocket serverSocket = null;
         try {
@@ -68,6 +66,7 @@ public class RpcServer {
             // 循环实例化
             for(Class<?> cla:classes){
                 Object obj = cla.newInstance();
+                //key  service   value  serviceImpl Object
                 services.put(cla.getAnnotation(Service.class).value(), obj);
             }
             return services;

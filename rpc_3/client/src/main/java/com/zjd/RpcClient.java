@@ -28,13 +28,14 @@ public class RpcClient{
         ObjectInputStream inputStream = null;
         Socket socket = null;
         try {
+            //1.对server发起调用请求
             socket = new Socket(address, port);
             objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-
             objectOutputStream.writeObject(request);
             objectOutputStream.flush();
-            inputStream = new ObjectInputStream(socket.getInputStream());
 
+            //2.获取并返回调用结果
+            inputStream = new ObjectInputStream(socket.getInputStream());
             return inputStream.readObject();
         } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
